@@ -192,8 +192,6 @@ class _IconsRow extends StatelessWidget {
 
     return Row(
       children: [
-        _InfoIcon(icon: Icons.directions_car, label: '—', style: infoStyle),
-        const SizedBox(width: 20),
         _InfoIcon(
           icon: Icons.bed,
           label: listing.beds?.toString() ?? '—',

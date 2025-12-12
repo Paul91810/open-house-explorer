@@ -104,11 +104,6 @@ class ListingCard extends StatelessWidget {
                     Row(
                       children: [
                         _iconWithText(
-                          icon: Icons.directions_car,
-                          text: '—',
-                        ),
-                        const SizedBox(width: 12),
-                        _iconWithText(
                           icon: Icons.bed,
                           text: listing.beds?.toString() ?? '—',
                         ),
@@ -145,23 +140,23 @@ class ListingCard extends StatelessWidget {
     }
 
     final normalized = status.toLowerCase();
-    Color bg = const Color(0xFF0B71C8);
+    Color bg = const Color.fromARGB(236, 212, 233, 252);
     if (normalized.contains('pending')) {
       bg = const Color(0xFFFFA000);
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
         status,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
+        style:  TextStyle(
+          color: Colors.blue[900],
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
