@@ -60,6 +60,7 @@ class ListingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
   void startSearch() {
     if (_isSearchMode) return;
     _isSearchMode = true;
@@ -82,6 +83,7 @@ class ListingsProvider extends ChangeNotifier {
     _initialAnimationPlayed = true;
     notifyListeners();
   }
+
 
   void _applyFilter() {
     if (_searchQuery.isEmpty) {

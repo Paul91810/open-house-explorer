@@ -31,7 +31,6 @@ class _StaggeredListItemState extends State<StaggeredListItem>
       curve: Curves.easeOut,
     );
 
-    // Delay based on index to get the "one by one" effect
     Future.delayed(Duration(milliseconds: 80 * widget.index), () {
       if (mounted) _controller.forward();
     });

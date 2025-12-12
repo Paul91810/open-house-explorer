@@ -16,10 +16,7 @@ class ListingsPage extends StatefulWidget {
 }
 
 class _ListingsPageState extends State<ListingsPage> {
-  bool isSearchMode = false;
   final TextEditingController _searchController = TextEditingController();
-
-  bool _initialAnimationPlayed = false;
 
   @override
   void dispose() {
@@ -27,16 +24,15 @@ class _ListingsPageState extends State<ListingsPage> {
     super.dispose();
   }
 
- void _startSearch() {
-  context.read<ListingsProvider>().startSearch();
-}
+  void _startSearch() {
+    context.read<ListingsProvider>().startSearch();
+  }
 
-// Stop search
-void _stopSearch() {
-  final provider = context.read<ListingsProvider>();
-  provider.stopSearch();
-  _searchController.clear();
-}
+  void _stopSearch() {
+    final provider = context.read<ListingsProvider>();
+    provider.stopSearch();
+    _searchController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,7 @@ void _stopSearch() {
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(appBarHeight),
-        child: isSearchMode
+        child: provider.isSearchMode
             ? _buildSearchAppBar(appBarHeight)
             : _buildDefaultAppBar(appBarHeight),
       ),
@@ -77,7 +73,7 @@ void _stopSearch() {
               ),
             ],
           ),
-          if (isSearchMode &&
+          if (provider.isSearchMode &&
               provider.status == ListingsStatus.loaded &&
               provider.listings.isNotEmpty)
             Positioned(
@@ -97,10 +93,7 @@ void _stopSearch() {
     return AppBar(
       toolbarHeight: height,
       backgroundColor: const Color(0xFF0B71C8),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.of(context).maybePop(),
-      ),
+     
       centerTitle: true,
       title: const Text(
         'Listings',
@@ -119,6 +112,8 @@ void _stopSearch() {
   }
 
   AppBar _buildSearchAppBar(double height) {
+    final provider = context.watch<ListingsProvider>();
+
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: height,
@@ -144,7 +139,7 @@ void _stopSearch() {
             context.read<ListingsProvider>().updateSearchQuery(value),
       ),
       actions: [
-        if (_searchController.text.isNotEmpty)
+        if (provider.searchQuery.isNotEmpty)
           IconButton(
             icon: const Icon(Icons.clear, color: Colors.white),
             onPressed: () {
@@ -161,7 +156,6 @@ void _stopSearch() {
     switch (provider.status) {
       case ListingsStatus.initial:
       case ListingsStatus.loading:
-        // Shimmer skeleton instead of simple progress indicator
         return const ListingsShimmer();
 
       case ListingsStatus.error:
@@ -172,10 +166,13 @@ void _stopSearch() {
           return const Center(child: Text('No listings found.'));
         }
 
-        // We want the entry animation only the first time data is shown
-        final playEntryAnimation = !_initialAnimationPlayed;
+        final playEntryAnimation = !provider.initialAnimationPlayed;
+
         if (playEntryAnimation) {
-          _initialAnimationPlayed = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            context.read<ListingsProvider>().markInitialAnimationPlayed();
+          });
         }
 
         return ListView.separated(
@@ -195,7 +192,6 @@ void _stopSearch() {
               return card;
             }
 
-            // Fade + slide each item in with a small delay by index
             return StaggeredListItem(
               index: index,
               child: card,
@@ -205,10 +201,9 @@ void _stopSearch() {
     }
   }
 
-  // Custom route with fade transition to detail page
   Route _buildDetailRoute(Listing listing) {
     return PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 700),
+      transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (context, animation, secondaryAnimation) =>
           FadeTransition(
         opacity: animation,

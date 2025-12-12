@@ -41,7 +41,6 @@ class ListingsShimmer extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                // Text skeletons
                 Expanded(
                   child: Padding(
                     padding:

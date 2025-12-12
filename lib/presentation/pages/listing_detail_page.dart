@@ -26,7 +26,6 @@ class ListingDetailPage extends StatelessWidget {
           length: 2,
           child: Column(
             children: [
-              // Hero for smooth image transition from list -> detail
               Hero(
                 tag: 'listing-image-${listing.mlsNumber}',
                 child: ImageGallery(
@@ -47,7 +46,6 @@ class ListingDetailPage extends StatelessWidget {
                         horizontalPadding,
                         8 + MediaQuery.of(context).padding.bottom,
                       ),
-                      // Slide + fade animation for the whole bottom content
                       child: TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0, end: 1),
                         duration: const Duration(seconds: 2),
