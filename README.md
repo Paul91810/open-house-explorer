@@ -23,8 +23,7 @@ The app implements:
 - **Networking / assets**
   - Local JSON via `rootBundle`
   - `cached_network_image` for images (with local placeholder)
-  - `share_plus` for sharing
-  - `url_launcher` for opening website & map URLs
+
 
 ---
 
