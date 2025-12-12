@@ -6,10 +6,7 @@ import '../widgets/image_gallery.dart';
 class ListingDetailPage extends StatelessWidget {
   final Listing listing;
 
-  const ListingDetailPage({
-    super.key,
-    required this.listing,
-  });
+  const ListingDetailPage({super.key, required this.listing});
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +65,7 @@ class ListingDetailPage extends StatelessWidget {
                               listing.displayAddress
                                   ? listing.fullAddress
                                   : 'Address undisclosed',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(color: Colors.grey[800]),
                             ),
                             const SizedBox(height: 12),
@@ -124,9 +119,9 @@ class _HeaderRow extends StatelessWidget {
     final isTablet = size.width >= 600;
 
     final priceStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontSize: isTablet ? 24 : 20,
-          fontWeight: FontWeight.w700,
-        );
+      fontSize: isTablet ? 24 : 20,
+      fontWeight: FontWeight.w700,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,9 +134,9 @@ class _HeaderRow extends StatelessWidget {
         if (listing.propertyType != null)
           Text(
             listing.propertyType!,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[700],
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
           ),
         const Spacer(),
         _StatusChip(status: listing.status ?? ''),
@@ -150,10 +145,7 @@ class _HeaderRow extends StatelessWidget {
   }
 
   String _formatPrice(int price) {
-    return '\$${price.toString().replaceAllMapped(
-      RegExp(r'\B(?=(\d{3})+(?!\d))'),
-      (m) => ',',
-    )}';
+    return '\$${price.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ',')}';
   }
 }
 
@@ -200,11 +192,7 @@ class _IconsRow extends StatelessWidget {
 
     return Row(
       children: [
-        _InfoIcon(
-          icon: Icons.directions_car,
-          label: '—',
-          style: infoStyle,
-        ),
+        _InfoIcon(icon: Icons.directions_car, label: '—', style: infoStyle),
         const SizedBox(width: 20),
         _InfoIcon(
           icon: Icons.bed,
@@ -233,11 +221,7 @@ class _InfoIcon extends StatelessWidget {
   final String label;
   final TextStyle? style;
 
-  const _InfoIcon({
-    required this.icon,
-    required this.label,
-    this.style,
-  });
+  const _InfoIcon({required this.icon, required this.label, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -261,8 +245,11 @@ class _ActionsRow extends StatelessWidget {
         Expanded(
           child: OutlinedButton.icon(
             onPressed: () {},
-            icon: const Icon(Icons.language,
-                size: 18, color: Color(0xFF0B71C8)),
+            icon: const Icon(
+              Icons.language,
+              size: 18,
+              color: Color(0xFF0B71C8),
+            ),
             label: const Text(
               'View on website',
               style: TextStyle(color: Color(0xFF0B71C8), fontSize: 13),
@@ -280,8 +267,11 @@ class _ActionsRow extends StatelessWidget {
         Expanded(
           child: OutlinedButton.icon(
             onPressed: () {},
-            icon: const Icon(Icons.location_on,
-                size: 18, color: Color(0xFF0B71C8)),
+            icon: const Icon(
+              Icons.location_on,
+              size: 18,
+              color: Color(0xFF0B71C8),
+            ),
             label: const Text(
               'View on map',
               style: TextStyle(color: Color(0xFF0B71C8), fontSize: 13),
@@ -307,12 +297,22 @@ class _DetailsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       padding: const EdgeInsets.only(top: 8, bottom: 24),
       children: [
         _DetailRow(label: 'MLS#', value: listing.mlsNumber),
         _DetailRow(label: 'Property type', value: listing.propertyType ?? '—'),
         _DetailRow(label: 'Status', value: listing.status ?? '—'),
+        SizedBox(height: 4),
+        Text(
+          'Discription',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 4),
+        Text(listing.remarks ?? 'No description available.'),
       ],
     );
   }
@@ -329,9 +329,13 @@ class _AgentTab extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8, bottom: 24),
       children: [
         _DetailRow(
-            label: 'Name', value: listing.listAgentName ?? 'Not available'),
+          label: 'Name',
+          value: listing.listAgentName ?? 'Not available',
+        ),
         _DetailRow(
-            label: 'Office', value: listing.listAgentOffice ?? 'Not available'),
+          label: 'Office',
+          value: listing.listAgentOffice ?? 'Not available',
+        ),
       ],
     );
   }
@@ -341,26 +345,20 @@ class _DetailRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const _DetailRow({
-    required this.label,
-    required this.value,
-  });
+  const _DetailRow({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Colors.grey[600],
-        );
+    final labelStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]);
     final valueStyle = Theme.of(context).textTheme.bodyMedium;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          SizedBox(
-            width: 110,
-            child: Text(label, style: labelStyle),
-          ),
+          SizedBox(width: 110, child: Text(label, style: labelStyle)),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
